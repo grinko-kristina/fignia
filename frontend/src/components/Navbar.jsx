@@ -56,11 +56,17 @@ function Navbar() {
 
                 {/* Авторизация */}
                 {isAuthorized ? (
-                    <li>
-                        <Link onClick={handleLogout} to="/logout" className="button-link">
-                            Logout
-                        </Link>
-                    </li>
+                    <>
+                        <li className="dashboard-icon">
+                            <Link to="/dashboard">DB</Link>  {/* Исправлено: </link> на </Link> */}
+                        </li>
+
+                        <li>
+                            <Link onClick={handleLogout} to="/logout" className="button-link">
+                                Logout
+                            </Link>
+                        </li>
+                    </>
                 ) : (
                     <>
                         <li>

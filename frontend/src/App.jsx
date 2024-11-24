@@ -8,7 +8,7 @@ import { useAuthentication } from "./auth";
 import RedirectGoogleAuth from "./components/GoogleRedirectHandler";
 import BookDetails from "./components/BookDetails";
 import SearchBooks from "./components/SearchBooks"; // Страница для поиска книг
-
+import Dashboard from "./components/Dashboard"
 function App() {
   const { isAuthorized } = useAuthentication();
 
@@ -27,6 +27,7 @@ function App() {
         <Route path="/login/callback" element={<RedirectGoogleAuth />} />
         <Route path="/login" element={<ProtectedLogin />} />
         <Route path="/register" element={<ProtectedRegister />} />
+        <Route path="/dashboard" element={isAuthorized ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchBooks />} /> {/* Страница поиска */}
         <Route path="/books/:id" element={<BookDetails />} />

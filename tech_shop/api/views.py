@@ -47,7 +47,22 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+class UserDashboardView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(selfself, request, *args, **kwargs):
+        user = request.user
+
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'is_staff': user.is_staff,
+            'is_superuser': user.is_superuser,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+        return Response(user_data)
 @login_required
 def google_login_callback(request):
     user = request.user
