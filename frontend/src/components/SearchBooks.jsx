@@ -1,70 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SearchBooks = () => {
-    const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [error, setError] = useState(null);
+    const location = useLocation(); // Получаем параметры URL
+    const query = new URLSearchParams(location.search).get('query'); // Получаем query из параметров URL
 
     const fetchData = async () => {
-        if (query.trim() === '') {
+        if (!query || query.trim() === '') {
             setResults([]);
             return;
         }
 
-        const accessToken = localStorage.getItem('accessToken'); // Retrieve the access token from localStorage
-
+        const accessToken = localStorage.getItem('access');
         if (!accessToken) {
             setError('No access token. Please log in.');
             return;
         }
 
         try {
-        console.log(accessToken)
             const response = await axios.get(`http://127.0.0.1:8000/api/books/?search=${query}`, {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`, // Send the token in the Authorization header
+                    Authorization: `Bearer ${accessToken}`,
                 },
             });
-
             setResults(response.data);
             setError(null);
         } catch (error) {
-            console.log('Error response:', error.response); // Log the full error response
             if (error.response && error.response.status === 401) {
-                setError("Unauthorized: Please log in.");
+                setError('Unauthorized: Please log in.');
             } else {
-                setError("Error fetching data. Please try again.");
+                setError('Error fetching data. Please try again.');
             }
             setResults([]);
         }
     };
 
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            fetchData();
-        }, 500);
-
-        return () => clearTimeout(delayDebounceFn);
+        fetchData();
     }, [query]);
 
     return (
         <div>
-            <h1>Search Books</h1>
-            <input
-                type="text"
-                placeholder="Search for books..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-            />
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            <h2>Search Results for "{query}"</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <div>
                 {results.length > 0 ? (
-                    <ul>
-                        {results.map((book, index) => (
-                            <li key={index}>{book.title}</li>
+                    <div className="book-list">
+                        {results.map((book) => (
+                            <div key={book.id} className="book-item">
+                                <Link to={`/books/${book.bookId}`}>
+                                    <img
+            src={book.coverImg}
+            alt={`${book.title} cover`}
+          // style={{ maxWidth: '500px', marginBottom: '100px' }} // Пример стилей
+        />
+                                    <h3>{book.title}</h3>
+                                    <p>{book.author}</p>
+                                </Link>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 ) : (
                     <p>No results found.</p>
                 )}

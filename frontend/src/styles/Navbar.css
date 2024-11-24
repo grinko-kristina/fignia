@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: white;
+    background-color: white; /* Белый фон */
 }
 
 .navbar-logo-link {
@@ -53,6 +53,7 @@
 .navbar-menu li {
     position: relative;
 }
+
 .button-link-search {
     background-color: #d9d9d9;
     color: black !important;
@@ -60,11 +61,10 @@
     background-position: 10px 10px;
     background-repeat: no-repeat;
     padding-left: 40px;
-
 }
 
 .button-link {
-    background-color: #ffd15f;
+    background-color: #ffd15f; /* Жёлтая кнопка */
     color: black !important;
     border: none;
     padding: 8px 20px;
@@ -75,7 +75,6 @@
 
 .button-link-login {
     color: black;
-
     cursor: pointer;
     text-decoration: none; /* Remove underline */
 }
@@ -97,27 +96,4 @@
     .navbar-menu-right {
         margin-left: 0;
     }
-}
-
-.search-results {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1000;
-}
-
-.search-results li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-}
-
-.search-results li:hover {
-    background-color: #f5f5f5;
 }

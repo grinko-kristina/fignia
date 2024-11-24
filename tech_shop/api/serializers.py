@@ -19,4 +19,4 @@ class UserSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['bookid', 'title', 'author']  # Вкажіть необхідні поля
+        fields = ['bookId', 'title', 'author', 'description', 'pages', 'rating', 'coverImg']  # Вкажіть необхідні поля

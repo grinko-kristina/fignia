@@ -17,6 +17,7 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SITE_ID = 1
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'rest_framework.authtoken',
-    'tech_shop'
 ]
 
 MIDDLEWARE = [
@@ -90,13 +90,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bookwise_database',
-        'USER': 'root',
-        'PASSWORD': 'pyrajok17',
-        'HOST': 'localhost',
+        'USER': 'root',                       # Ім'я користувача MySQL
+        'PASSWORD': 'pyrajok17',    # Пароль
+        'HOST': 'localhost',                  # Хост сервера бази даних
         'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
     }
 }
 

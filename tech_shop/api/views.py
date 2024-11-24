@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from allauth.socialaccount.models import SocialToken, SocialAccount
 from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
@@ -15,6 +16,7 @@ from .serializers import UserSerializer, BookSerializer
 from rest_framework.viewsets import ModelViewSet
 from .models import Book
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -91,4 +93,18 @@ class BookFilter(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['bookid','title', 'author']
+    search_fields = ['bookId','title', 'author']
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+from rest_framework import serializers, viewsets
+from .models import Book
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['bookId', 'title', 'author', 'rating', 'description', 'pages', 'coverImg']
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
