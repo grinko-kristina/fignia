@@ -12,11 +12,12 @@ import json
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer, BookSerializer
+from .serializers import UserSerializer, BookSerializer, ReviewSerializer
 from rest_framework.viewsets import ModelViewSet
-from .models import Book
+from .models import Review, Book
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
+
 
 
 
@@ -123,3 +124,47 @@ class BookSerializer(serializers.ModelSerializer):
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        book_id = self.request.query_params.get('book_id', None)
+        if book_id:
+            return Review.objects.filter(book_id=book_id).select_related('user')
+        return Review.objects.none()
+
+    def perform_create(self, serializer):
+        try:
+            book_id = self.request.data.get('book_id')
+            review_text = self.request.data.get('review_text')
+            rating = self.request.data.get('rating')
+
+            # Verify the book exists
+            book = Book.objects.get(bookId=book_id)
+
+
+
+
+
+            serializer.save(
+                user=self.request.user,
+                book=book,
+                review_text=review_text,
+                rating=rating
+            )
+
+        except Book.DoesNotExist:
+            return Response(
+                {"error": f"Book with ID {book_id} does not exist"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
