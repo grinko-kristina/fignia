@@ -17,10 +17,30 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Review, Book
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .chat import ChatbotService  # Шлях має відповідати структурі вашого проекту
+
+chatbot = ChatbotService()
 
 
+@csrf_exempt
+def chat_view(request):
 
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            message = data.get('message', '')
 
+            response = chatbot.get_response(message)
+
+            return JsonResponse({
+                'response': response
+            })
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid method'}, status=405)
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
 

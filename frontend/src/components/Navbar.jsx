@@ -10,19 +10,23 @@ import SearchIcon from "@mui/icons-material/Search";
 function Navbar() {
     const { isAuthorized, logout } = useAuthentication();
     const [searchQuery, setSearchQuery] = useState(""); // State for search query
-    const navigate = useNavigate(); // Навигация
+    const navigate = useNavigate(); // Navigation hook
 
     const handleLogout = () => {
         logout();
     };
 
     const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value); // Обновляем запрос поиска
+        setSearchQuery(event.target.value); // Update search query
     };
 
     const handleSearchSubmit = (event) => {
-        event.preventDefault(); // Останавливаем перезагрузку страницы
-        navigate(`/search?query=${searchQuery}`); // Перенаправляем на страницу с результатами поиска
+        event.preventDefault(); // Prevent page reload
+        navigate(`/search?query=${searchQuery}`); // Navigate to search results
+    };
+
+    const handleAskAI = () => {
+        navigate("/ask-ai"); // Navigate to ChatPage when the button is clicked
     };
 
     return (
@@ -34,9 +38,9 @@ function Navbar() {
                 {/* Add other navbar items if needed */}
             </ul>
             <ul className="navbar-menu-right">
-                {/* Поисковая строка */}
+                {/* Search bar */}
                 <li className="navbar-search">
-                    <form onSubmit={handleSearchSubmit}> {/* Добавляем форму для сабмита */}
+                    <form onSubmit={handleSearchSubmit}>
                         <TextField
                             variant="outlined"
                             placeholder="Search for books or authors..."
@@ -54,11 +58,11 @@ function Navbar() {
                     </form>
                 </li>
 
-                {/* Авторизация */}
+                {/* Authentication */}
                 {isAuthorized ? (
                     <>
                         <li className="dashboard-icon">
-                            <Link to="/dashboard">DB</Link>  {/* Исправлено: </link> на </Link> */}
+                            <Link to="/dashboard">DB</Link>
                         </li>
 
                         <li>
@@ -81,6 +85,13 @@ function Navbar() {
                         </li>
                     </>
                 )}
+
+                {/* Ask AI Button */}
+                <li>
+                    <button onClick={handleAskAI} className="ask-ai-button">
+                        Ask AI
+                    </button>
+                </li>
             </ul>
         </div>
     );

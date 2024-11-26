@@ -9,6 +9,10 @@ import RedirectGoogleAuth from "./components/GoogleRedirectHandler";
 import BookDetails from "./components/BookDetails";
 import SearchBooks from "./components/SearchBooks"; // Страница для поиска книг
 import Dashboard from "./components/Dashboard"
+import ChatPage from './pages/ChatPage';
+
+// У Routes або Switch
+
 function App() {
   const { isAuthorized } = useAuthentication();
 
@@ -32,6 +36,7 @@ function App() {
         <Route path="/search" element={<SearchBooks />} /> {/* Страница поиска */}
         <Route path="/books/:id" element={<BookDetails />} />
         <Route path="*" element={<NotFound />} /> {/* Страница 404 */}
+        <Route path="/ask-ai" element={<ChatPage />} />
       </Routes>
     </BrowserRouter>
   );
