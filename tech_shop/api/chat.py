@@ -8,7 +8,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 class ChatbotService:
     def __init__(self, model='llama3-8b-8192'):
-        groq_api_key = os.getenv('GROQ_API_KEY', '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')
+        groq_api_key = os.getenv('GROQ_API_KEY', '')
 
         self.groq_chat = ChatGroq(
             groq_api_key=groq_api_key,
